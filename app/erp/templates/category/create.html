@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="POST">
+
+    <div class="card card-default">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{ title }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                <h5><i class="icon fas fa-ban"></i> No se pudo guardar el registro</h5>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+                <label for="{{ field.label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-test">
+                <i class="fas fa-save"></i>
+                Guardar registro
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

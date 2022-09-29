@@ -1,36 +1,76 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet"
+    href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="card card-default">
 
-<div class="card-header">
-    <h3 class="card-title">
-        <i class="fas fa-search"></i>
-        {{ title }}
-    </h3>
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-search"></i>
+            {{ title }}
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <table class="table" id="data">
+            <thead>
+                {% block columns %}
+                {% endblock %}
+            </thead>
+            <tbody>
+                {% block rows %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <a href="{{ create_url }}" type="button" class="btn btn-primary btn-test">
+            <i class="fas fa-plus"></i>
+            Nuevo registro
+        </a>
+    </div>
 </div>
 
-<div class="card-body">
-    <table class="table">
-        <thead>
-{% block columns %}
 {% endblock %}
-        </thead>
-        <tbody>
-            {% block rows %}
-            {% endblock %}
-        </tbody>
-    </table>
-</div>
 
-<div class="card-footer">
-    <button type="button" class="btn btn-primary">
-        <i class="fas fa-plus"></i>
-        Nuevo registro
-    </button>
-</div>
-</div>
+{% block javascript %}
+<script type="application/javascript">
+    $(() => {
+        $('#data').DataTable({
+            responsive: true,
+            autoWidth: false
+        })
+        
+        $('.btn-test').on('click', () => {
+            $.ajax({
+                url: "{% url 'erp:category_list_class' %}",
+                type: 'POST',
+                data: {id:2},
+                dataType: 'json'
+            }).done(data => {console.log(data)})
+            
+            // no funciona con fetch
+/*             fetch("{% url 'erp:category_list_class' %}", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id:1}),
+                data: {id:1}
+            }).then(response => response.json()).then(json => console.log(json)) */
+        })
 
-
+    });
+</script>
 {% endblock %}

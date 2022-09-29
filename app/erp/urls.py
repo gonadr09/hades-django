@@ -5,5 +5,6 @@ app_name = 'erp'
 
 urlpatterns = [
     path('category/list/def/', category_list, name='category_list_def'),
-    path('category/list/class/', CategoryListView.as_view(), name='category_list_class')
+    path('category/list/class/', CategoryListView.as_view(), name='category_list_class'),
+    path('category/add/', CategoryCreateView.as_view(), name="category_create")
 ]

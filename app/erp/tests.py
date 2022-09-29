@@ -1,27 +1,11 @@
-from config.wsgi import *
-from .models import Type
+from config.asgi import *
+from erp.models import *
 
-# Create your tests here.
+data = ['Leche y derivados', 'Carnes, pescados y huevos', 'Patatas, legumbres, frutos secos',
+        'Verduras y Hortalizas', 'Frutas', 'Cereales y derivados, azúcar y dulces',
+        'Grasas, aceite y mantequilla']
 
-# Listar
-query = Type.objects.all()
-print(query)
-
-# Insertar
-i = Type()
-i.name = "Accionista"
-i.save()
-
-# Editar
-e = Type.objects.get(id=1)
-e.name = "Presidente"
-e.save()
-
-# Eliminar
-d = Type.objects.get(id=1)
-d.delete()
-
-# Otros
-obj1 = Type.objects.filter(name__contains='terry')
-obj2 = Type.objects.filter(name_endswith='a').exclude(id=5)
-obj3 = Type.objects.filter(name_startwith='a').count()
+for i in data:
+    cat = Category(name=i)
+    cat.save()
+    print('Guardado registro N°{}'.format(cat.id))

@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
-
+from django.forms import model_to_dict
+from django.urls import reverse
 from erp.choices import gender_choices
 
 
@@ -11,6 +12,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def toJSON(self):
+        return model_to_dict(self)
+
+    def get_absolute_url(self):
+        return reverse('erp:category_list_def')
 
     class Meta:
         verbose_name = 'Categoria'
